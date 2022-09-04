@@ -1,6 +1,5 @@
 import { Message } from "../types/message";
 import * as Crypto from 'crypto';
-import math from "./math";
 
 export type EncryptedMessage = `${string}.${string}`;
 
@@ -23,7 +22,6 @@ export default class MessageCryptor {
   
     const key = cryptoKey;
 
-    console.log(iv, data);
     const decrypter = Crypto.createDecipheriv(this.ALGHORITM, key, Buffer.from(iv, this.ENCODING));
     
     return JSON.parse( 
