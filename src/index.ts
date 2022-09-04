@@ -1,4 +1,7 @@
 import env from 'dotenv';
+import Client from './modules/client';
+export { Client };
+
 import Cryptor, { SharerLink, SharerLinkContent } from './modules/sharerKeyCryptor';
 env.config();
 
@@ -13,5 +16,4 @@ export const share = ( content: SharerLinkContent ): SharerLink => {
   console.log('Generated sharer link: ', link);
   return link;
 }
-
 

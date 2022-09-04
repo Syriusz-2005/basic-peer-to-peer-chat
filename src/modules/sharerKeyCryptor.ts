@@ -11,7 +11,7 @@ export default class Cryptor {
   private static readonly KEY = process.env.SHARER_CRYPTO_KEY as string;
 
 
-  private static randomString( length: number ) {
+  public static randomString( length: number ) {
     const bytes = Crypto.randomBytes(length);
 
     return bytes.toString('hex');
