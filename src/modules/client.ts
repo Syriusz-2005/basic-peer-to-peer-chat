@@ -23,7 +23,6 @@ export default class Client {
       const cipher = data.toString() as EncryptedMessage;
 
       const message = MessageCryptor.decrypt(cipher, process.env.SHARER_CRYPTO_KEY as string );
-      console.log(message);
 
       if (message.header === 'message') {
         console.log('incoming msg:', message.content);
