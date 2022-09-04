@@ -41,8 +41,11 @@ export default class Client {
     const socket = new Net.Socket();
 
     socket.connect(port, ip, () => {
+      console.log('Connected!');
+      console.log('type help -msg for more commands');
       this.handleNewSocket(socket);
     });
+
     socket.on('error', (err) => {
       console.log('Connection failed, reason: ', err);
     });

@@ -6,13 +6,13 @@ export default class math {
     return Math.floor( Math.random() * (max - min) + min );
   }
 
-  public static randomString( length: number ): string {
+  public static randomBytes( length: number ) {
     const bytes = randomBytes(length);
 
-    return bytes.toString('utf-8');
+    return bytes;
   }
 
   public static randomUuid(): string {
-    return this.randomString(30);
+    return this.randomBytes(30).toString();
   }
 }

@@ -7,18 +7,18 @@ export type SharerLinkContent = {
 }
 
 export default class Cryptor {
-  private static readonly ALGHORITM = 'aes-256-ocb';
+  private static readonly ALGHORITM = 'aes-256-ctr';
   private static readonly KEY = process.env.SHARER_CRYPTO_KEY as string;
 
 
-  public static randomString( length: number ) {
+  public static randomBytes( length: number ) {
     const bytes = Crypto.randomBytes(length);
 
-    return bytes.toString('hex');
+    return bytes;
   }
 
   public static encrypt(ip: string, port: number): SharerLink {
-    const iv = this.randomString(16);
+    const iv = Crypto.randomBytes(16);
 
     const crypter = Crypto.createCipheriv(this.ALGHORITM, this.KEY, iv);
 
@@ -27,22 +27,21 @@ export default class Cryptor {
         port,
       }))
       .toString('hex')
-
-    return `${iv}.${encryptedData}`;
+  
+    return `${iv.toString('hex')}.${encryptedData}`;
   }
 
 
   public static decrypt( link: SharerLink ): SharerLinkContent {
     const [ iv, data ] = link.split('.');
-    console.log(this);
 
+    console.log(iv, data);
     const decrypter = Crypto.createDecipheriv(this.ALGHORITM, this.KEY, Buffer.from(iv, 'hex'));
-    
+
     return JSON.parse( 
       Buffer.concat([
         decrypter
-          .update(Buffer.from(data, 'hex')),
-        decrypter.final()
+          .update(Buffer.from(data, 'hex'))
       ])
       .toString()
     );

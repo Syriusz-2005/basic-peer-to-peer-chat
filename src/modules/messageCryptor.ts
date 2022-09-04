@@ -6,11 +6,11 @@ import { SharerLink } from "./sharerKeyCryptor";
 export type EncryptedMessage = `${string}.${string}`;
 
 export default class MessageCryptor {
-  private static readonly ALGHORITM = 'aes-256-gcm';
+  private static readonly ALGHORITM = 'aes-256-ctr';
   private static readonly ENCODING = process.env.ENCODING as BufferEncoding;
 
   public static encrypt( message: Message, cryptoKey: string, targetLink: SharerLink ): EncryptedMessage {
-    const iv = math.randomString(16);
+    const iv = math.randomBytes(16);
     const key = cryptoKey + targetLink;
 
     const crypter = Crypto.createCipheriv(this.ALGHORITM, key, iv);
