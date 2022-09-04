@@ -18,7 +18,7 @@ export default class Cryptor {
   }
 
   public static encrypt(ip: string, port: number): SharerLink {
-    const iv = this.randomString(20);
+    const iv = this.randomString(16);
 
     const crypter = Crypto.createCipheriv(this.ALGHORITM, this.KEY, iv);
 
@@ -34,6 +34,7 @@ export default class Cryptor {
 
   public static decrypt( link: SharerLink ): SharerLinkContent {
     const [ iv, data ] = link.split('.');
+    console.log(this);
 
     const decrypter = Crypto.createDecipheriv(this.ALGHORITM, this.KEY, Buffer.from(iv, 'hex'));
     

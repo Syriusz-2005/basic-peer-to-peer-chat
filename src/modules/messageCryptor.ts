@@ -10,7 +10,7 @@ export default class MessageCryptor {
   private static readonly ENCODING = process.env.ENCODING as BufferEncoding;
 
   public static encrypt( message: Message, cryptoKey: string, targetLink: SharerLink ): EncryptedMessage {
-    const iv = math.randomString(20);
+    const iv = math.randomString(16);
     const key = cryptoKey + targetLink;
 
     const crypter = Crypto.createCipheriv(this.ALGHORITM, key, iv);
