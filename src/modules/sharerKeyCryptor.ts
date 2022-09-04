@@ -35,7 +35,6 @@ export default class Cryptor {
   public static decrypt( link: SharerLink ): SharerLinkContent {
     const [ iv, data ] = link.split('.');
 
-    console.log(iv, data);
     const decrypter = Crypto.createDecipheriv(this.ALGHORITM, this.KEY, Buffer.from(iv, 'hex'));
 
     return JSON.parse( 

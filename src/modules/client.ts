@@ -1,5 +1,4 @@
 import * as Net from 'net';
-import { getLocalSharerLink } from '../share';
 import math from './math';
 import MessageCryptor, { EncryptedMessage } from './messageCryptor';
 
@@ -11,18 +10,19 @@ export default class Client {
   private handleNewSocket( socket: Net.Socket ) {
     const id = math.randomUuid();
 
-    this.sockets.set( id, socket );
+    this.sockets.set( id, socket);
+
+    console.log('New connection established!');
 
     socket.on('close', () => {
       this.sockets.delete( id );
     });
 
+    
     socket.on('data', ( data ) => {
-      const cipher = data.toString(process.env.ENCODING as BufferEncoding) as EncryptedMessage;
+      const cipher = data.toString() as EncryptedMessage;
 
-      console.log('[app]', cipher);
-
-      const message = MessageCryptor.decrypt(cipher, process.env.SHARER_CRYPTO_KEY as string, getLocalSharerLink() );
+      const message = MessageCryptor.decrypt(cipher, process.env.SHARER_CRYPTO_KEY as string );
       console.log(message);
     });
   }
@@ -36,13 +36,23 @@ export default class Client {
     });
   }
 
+  public send( msg: string ) {
+    const cipher = MessageCryptor.encrypt({
+      header: 'message',
+      content: msg,
+    }, process.env.SHARER_CRYPTO_KEY as string)
+
+    this.sockets.forEach( socket => {
+      socket.write(cipher);
+    });
+  }
 
   public connect( ip: string, port: number ): void {
     const socket = new Net.Socket();
 
     socket.connect(port, ip, () => {
-      console.log('Connected!');
-      console.log('type help -msg for more commands');
+      console.log('Connected succesfully!');
+      console.log('Type help -msg for more commands');
       this.handleNewSocket(socket);
     });
 
